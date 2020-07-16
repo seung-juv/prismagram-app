@@ -19,12 +19,13 @@ export default function App() {
   const [client, setClient] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const preLoad = async () => {
+    await AsyncStorage.clear();
     try {
       await Font.loadAsync({
         ...Ionicons.font
       });
-      await Asset.loadAsync([require("./assets/logo.svg")]);
-      const cache = new InMemoryCache({});
+      await Asset.loadAsync([require("./assets/logo.png")]);
+      const cache = new InMemoryCache();
       await persistCache({
         cache,
         storage: AsyncStorage
@@ -41,8 +42,8 @@ export default function App() {
       }
       setLoaded(true);
       setClient(client);
-    } catch (error) {
-      console.log(error);
+    } catch (e) {
+      console.log(e);
     }
   };
   useEffect(() => {
@@ -50,7 +51,7 @@ export default function App() {
   }, []);
 
   return loaded && client && isLoggedIn !== null
-    ? <ApolloProvider>
+    ? <ApolloProvider client={client}>
         <ThemeProvider theme={styles}>
           <AuthProvider isLoggedIn={isLoggedIn}>
             <NavController />
