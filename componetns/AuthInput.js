@@ -21,7 +21,8 @@ const AuthInput = ({
   returnKeyType = "done",
   onChange,
   onSubmitEditing = () => null,
-  authCorrect = true
+  authCorrect = true,
+  secureTextEntry = false
 }) =>
   <Container>
     <TextInput
@@ -32,6 +33,7 @@ const AuthInput = ({
       returnKeyType={returnKeyType}
       onSubmitEditing={onSubmitEditing}
       authCorrect={authCorrect}
+      secureTextEntry={secureTextEntry}
       value={value}
     />
   </Container>;

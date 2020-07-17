@@ -47,7 +47,6 @@ export default ({ navigation }) => {
         Alert.alert("Wrong secret!");
       }
     } catch (error) {
-      console.log(error);
       Alert.alert("Can't confirm secret");
     } finally {
       setLoading(false);

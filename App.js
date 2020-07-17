@@ -42,9 +42,7 @@ export default function App() {
       }
       setLoaded(true);
       setClient(client);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (error) {}
   };
   useEffect(() => {
     preLoad();

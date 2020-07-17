@@ -8,6 +8,8 @@ import { Alert } from "react-native";
 import { CREATE_ACCOUNT } from "./AuthQueries";
 import { useMutation } from "react-apollo-hooks";
 import constants from "../../constants";
+import ConnectFacebookButton from "../../componetns/ConnectFacebookButton";
+import Line from "../../componetns/Line";
 
 const View = styled.View`
   justify-content: center;
@@ -23,14 +25,16 @@ const Image = styled.Image`
 
 export default ({ navigation }) => {
   const emailInput = useInput(navigation.getParam("email", ""));
-  const firstNameInput = useInput("");
-  const lastNameInput = useInput("");
+  const passwordInput = useInput(navigation.getParam("password", ""));
+  const firstNameInput = useInput(navigation.getParam("firstName", ""));
+  const lastNameInput = useInput(navigation.getParam("lastName", ""));
   const userNameInput = useInput("");
   const [loading, setLoading] = useState(false);
   const [createAccountMutation] = useMutation(CREATE_ACCOUNT, {
     variables: {
       email: emailInput.value,
       firstName: firstNameInput.value,
+      password: passwordInput.value,
       lastName: lastNameInput.value,
       username: userNameInput.value
     }
@@ -38,11 +42,15 @@ export default ({ navigation }) => {
 
   const handleSignup = async () => {
     const { value: email } = emailInput;
+    const { value: password } = passwordInput;
     const { value: firstName } = firstNameInput;
     const { value: userName } = userNameInput;
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!emailRegex.test(email)) {
       return Alert.alert("That email is invalid");
+    }
+    if (password === "") {
+      return Alert.alert("I need your password");
     }
     if (firstName === "") {
       return Alert.alert("I need your name");
@@ -58,7 +66,6 @@ export default ({ navigation }) => {
         navigation.navigate("Login", { email });
       }
     } catch (error) {
-      console.log(error);
       Alert.alert("Username taken.", "Log in instead");
       navigation.navigate("Login", { email });
     } finally {
@@ -69,23 +76,39 @@ export default ({ navigation }) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View>
         <Image resizeMode={"contain"} source={require("../../assets/logo.png")} />
-        <AuthInput {...emailInput} placeholder="Email" authCorrect={false} />
+        <AuthInput
+          {...emailInput}
+          placeholder="Email"
+          keyboardType="email-address"
+          authCorrect={false}
+        />
+        <AuthInput
+          {...passwordInput}
+          placeholder="Password"
+          authCorrect={false}
+          secureTextEntry={true}
+        />
         <AuthInput
           {...firstNameInput}
           placeholder="First name"
-          authCorrect={false}
           autoCapitalize="words"
+          authCorrect={false}
         />
         <AuthInput
           {...lastNameInput}
           placeholder="Last name"
-          keyboardType="email-address"
           returnKeyType="send"
-          authCorrect={false}
           autoCapitalize="words"
+          authCorrect={false}
         />
         <AuthInput {...userNameInput} placeholder="Username" authCorrect={false} />
         <AuthButton loading={loading} text="Sign up" onPress={handleSignup} />
+        <Line
+          width={`${constants.width / 1.5}px`}
+          margin="25px 0px"
+          color={props => props.theme.lightGreyColor}
+        />
+        <ConnectFacebookButton navigation={navigation} setLoading={setLoading} />
       </View>
     </TouchableWithoutFeedback>
   );
