@@ -15,20 +15,17 @@ const LoginLinkText = styled.Text`
 `;
 
 export default ({ setLoading }) => {
-  let emailValue = null;
-  let firstNameValue = null;
-  let lastNameValue = null;
-  let usernameValue = null;
-
-  const [createAccountMutation] = useMutation(CREATE_ACCOUNT, {
-    variables: {
-      email: emailValue,
-      password: "facebook",
-      firstName: firstNameValue,
-      lastName: lastNameValue,
-      username: usernameValue
-    }
-  });
+  const createAccountMutation = async ({ email, firstName, lastName, username }) => {
+    useMutation(CREATE_ACCOUNT, {
+      variables: {
+        email: email,
+        password: "facebook",
+        firstName: firstName,
+        lastName: lastName,
+        username: username
+      }
+    })[0];
+  };
 
   const fbLogin = async () => {
     try {
@@ -44,12 +41,14 @@ export default ({ setLoading }) => {
         );
         const { email, first_name, last_name, name, id } = await response.json();
         const [username] = email.split("@");
-        emailValue = email;
-        firstNameValue = first_name;
-        lastNameValue = last_name;
-        usernameValue = username;
+
         try {
-          const { data: { createAccount } } = await createAccountMutation();
+          const { data: { createAccount } } = await createAccountMutation({
+            email: `fb${id}`,
+            firstName: first_name,
+            lastName: last_name,
+            username: username
+          });
           if (createAccount) {
             Alert.alert("Logged in!", `Hi ${name}!`);
           } else {
