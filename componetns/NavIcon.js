@@ -9,7 +9,6 @@ const NavIcon = ({ focused = true, name, color = styles.blackColor, size = 22 })
 NavIcon.propTypes = {
   name: propTypes.string.isRequired,
   color: propTypes.string,
-  size: propTypes.num,
   focused: propTypes.bool
 };
 
