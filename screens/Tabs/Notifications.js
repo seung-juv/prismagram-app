@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Loader from "../../componetns/Loader";
 
 const View = styled.View`
   justify-content: center;
@@ -11,5 +12,5 @@ const Text = styled.Text``;
 
 export default () =>
   <View>
-    <Text>Notifications</Text>
+    <Loader />
   </View>;

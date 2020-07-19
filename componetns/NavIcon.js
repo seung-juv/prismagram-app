@@ -1,15 +1,16 @@
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 import styles from "../styles";
 
-const NavIcon = ({ name, color = styles.blackColor, size = 26 }) =>
-  <Ionicons name={name} color={color} size={size} />;
+const NavIcon = ({ focused = true, name, color = styles.blackColor, size = 22 }) =>
+  <Ionicons name={name} color={focused ? color : styles.darkGreyColor} size={size} />;
 
-NavIcon.PropTypes = {
-  name: PropTypes.string.isRequired,
-  color: PropTypes.string,
-  size: PropTypes.num
+NavIcon.propTypes = {
+  name: propTypes.string.isRequired,
+  color: propTypes.string,
+  size: propTypes.num,
+  focused: propTypes.bool
 };
 
 export default NavIcon;

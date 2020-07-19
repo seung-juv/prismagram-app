@@ -4,6 +4,7 @@ import AuthHome from "../screens/Auth/AuthHome";
 import Signup from "../screens/Auth/Signup";
 import Login from "../screens/Auth/Login";
 import Confirm from "../screens/Auth/Confirm";
+import { cardStyles } from "./config";
 
 const AuthNavigation = createStackNavigator(
   {
@@ -16,7 +17,7 @@ const AuthNavigation = createStackNavigator(
     headerMode: "none",
     defaultNavigationOptions: {
       cardStyle: {
-        backgroundColor: "#FFFFFF"
+        ...cardStyles
       }
     }
   }

@@ -9,12 +9,21 @@ import Profile from "../screens/Tabs/Profile";
 import { createStackNavigator } from "react-navigation-stack";
 import MessagesLink from "../componetns/MessagesLink";
 import NavIcon from "../componetns/NavIcon";
+import { stackStyles, cardStyles } from "./config";
 
 const stackFactory = (initialRoute, customConfig) =>
   createStackNavigator({
     InitialRoute: {
       screen: initialRoute,
-      navigationOptions: { ...customConfig }
+      navigationOptions: {
+        ...customConfig,
+        headerStyle: {
+          ...stackStyles
+        },
+        cardStyle: {
+          ...cardStyles
+        }
+      }
     }
   });
 
@@ -31,7 +40,8 @@ export default createBottomTabNavigator(
           />
       }),
       navigationOptions: {
-        tabBarIcon: <NavIcon name={Platform.OS === "ios" ? "ios-home" : "md-home"} />
+        tabBarIcon: ({ focused }) =>
+          <NavIcon focused={focused} name={Platform.OS === "ios" ? "ios-home" : "md-home"} />
       }
     },
     Search: {
@@ -45,13 +55,19 @@ export default createBottomTabNavigator(
           />
       }),
       navigationOptions: {
-        tabBarIcon: <NavIcon name={Platform.OS === "ios" ? "ios-search" : "md-search"} />
+        tabBarIcon: ({ focused }) =>
+          <NavIcon focused={focused} name={Platform.OS === "ios" ? "ios-search" : "md-search"} />
       }
     },
     Add: {
       screen: () => <View />,
       navigationOptions: {
-        tabBarIcon: <NavIcon name={Platform.OS === "ios" ? "ios-add" : "md-add"} />,
+        tabBarIcon: ({ focused }) =>
+          <NavIcon
+            focused={focused}
+            size={32}
+            name={Platform.OS === "ios" ? "ios-add" : "md-add"}
+          />,
         tabBarOnPress: ({ navigation }) => navigation.navigate("PhotoNavigation")
       }
     },
@@ -66,7 +82,15 @@ export default createBottomTabNavigator(
           />
       }),
       navigationOptions: {
-        tabBarIcon: <NavIcon name={Platform.OS === "ios" ? "ios-heart" : "md-heart"} />
+        tabBarIcon: ({ focused }) =>
+          <NavIcon
+            focused={focused}
+            name={
+              Platform.OS === "ios"
+                ? focused ? "ios-heart" : "ios-heart-empty"
+                : focused ? "md-heart" : "md-heart-empty"
+            }
+          />
       }
     },
     Profile: {
@@ -80,13 +104,17 @@ export default createBottomTabNavigator(
           />
       }),
       navigationOptions: {
-        tabBarIcon: <NavIcon name={Platform.OS === "ios" ? "ios-person" : "md-person"} />
+        tabBarIcon: ({ focused }) =>
+          <NavIcon focused={focused} name={Platform.OS === "ios" ? "ios-person" : "md-person"} />
       }
     }
   },
   {
     tabBarOptions: {
-      showLabel: false
+      showLabel: false,
+      style: {
+        ...stackStyles
+      }
     }
   }
 );
