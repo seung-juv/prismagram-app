@@ -4,19 +4,35 @@ import { View } from "react-native";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import Home from "../screens/Tabs/Home";
 import Search from "../screens/Tabs/Search";
+import Detail from "../screens/Detail";
 import Notifications from "../screens/Tabs/Notifications";
 import Profile from "../screens/Tabs/Profile";
 import { createStackNavigator } from "react-navigation-stack";
 import MessagesLink from "../componetns/MessagesLink";
 import NavIcon from "../componetns/NavIcon";
 import { stackStyles, cardStyles } from "./config";
+import styles from "../styles";
 
 const stackFactory = (initialRoute, customConfig) =>
-  createStackNavigator({
-    InitialRoute: {
-      screen: initialRoute,
-      navigationOptions: {
-        ...customConfig,
+  createStackNavigator(
+    {
+      InitialRoute: {
+        screen: initialRoute,
+        navigationOptions: {
+          ...customConfig
+        }
+      },
+      Detail: {
+        screen: Detail,
+        navigationOptions: {
+          headerTitle: "Photo"
+        }
+      }
+    },
+    {
+      defaultNavigationOptions: {
+        headerLeft: () => null,
+        headerTitle: () => null,
         headerStyle: {
           ...stackStyles
         },
@@ -25,7 +41,7 @@ const stackFactory = (initialRoute, customConfig) =>
         }
       }
     }
-  });
+  );
 
 export default createBottomTabNavigator(
   {
@@ -45,15 +61,7 @@ export default createBottomTabNavigator(
       }
     },
     Search: {
-      screen: stackFactory(Search, {
-        headerRight: () => <MessagesLink />,
-        headerTitle: () =>
-          <Image
-            style={{ height: 28 }}
-            resizeMode={"contain"}
-            source={require("../assets/logo.png")}
-          />
-      }),
+      screen: stackFactory(Search),
       navigationOptions: {
         tabBarIcon: ({ focused }) =>
           <NavIcon focused={focused} name={Platform.OS === "ios" ? "ios-search" : "md-search"} />
@@ -110,6 +118,7 @@ export default createBottomTabNavigator(
     }
   },
   {
+    initialRouteName: "Search",
     tabBarOptions: {
       showLabel: false,
       style: {
