@@ -6,6 +6,7 @@ import Loader from "../../componetns/Loader";
 import { useQuery } from "react-apollo-hooks";
 import Post from "../../componetns/Post";
 import { POST_FRAGMENT } from "../../fragments";
+import constants from "../../constants";
 
 const FEED_QUERY = gql`
   {
@@ -14,6 +15,13 @@ const FEED_QUERY = gql`
     }
   }
   ${POST_FRAGMENT}
+`;
+
+const LoaderWrapper = styled.View`
+  flex: 1;
+  height: ${constants.height / 1.25}px;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default () => {
@@ -32,7 +40,9 @@ export default () => {
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
       {loading
-        ? <Loader />
+        ? <LoaderWrapper>
+            <Loader />
+          </LoaderWrapper>
         : data && data.seeFeed && data.seeFeed.map(post => <Post key={post.id} {...post} />)}
     </ScrollView>
   );

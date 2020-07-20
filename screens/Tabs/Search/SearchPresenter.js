@@ -6,10 +6,19 @@ import { useQuery } from "react-apollo-hooks";
 import { SEARCH } from "./SearchQueries";
 import Loader from "../../../componetns/Loader";
 import SquarePhoto from "../../../componetns/SquarePhoto";
+import constants from "../../../constants";
 
-const Wrapper = styled.View`
+const LoaderWrapper = styled.View`
+  flex: 1;
+  height: ${constants.height / 1.25}px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const PostContainer = styled.View`
   flex: 1;
   flex-flow: row nowrap;
+  margin-left: -1px;
 `;
 
 const SearchPresenter = ({ term, shouldFetch }) => {
@@ -33,13 +42,15 @@ const SearchPresenter = ({ term, shouldFetch }) => {
   };
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-      <Wrapper>
-        {loading
-          ? <Loader />
-          : data &&
-            data.searchPost &&
-            data.searchPost.map(post => <SquarePhoto key={post.id} {...post} />)}
-      </Wrapper>
+      {loading
+        ? <LoaderWrapper>
+            <Loader />
+          </LoaderWrapper>
+        : data &&
+          data.searchPost &&
+          <PostContainer>
+            {data.searchPost.map(post => <SquarePhoto key={post.id} {...post} />)}
+          </PostContainer>}
     </ScrollView>
   );
 };

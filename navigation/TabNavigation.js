@@ -11,6 +11,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import MessagesLink from "../componetns/MessagesLink";
 import NavIcon from "../componetns/NavIcon";
 import { stackStyles, cardStyles } from "./config";
+import UserDetail from "../screens/UserDetail";
 import styles from "../styles";
 
 const stackFactory = (initialRoute, customConfig) =>
@@ -25,14 +26,20 @@ const stackFactory = (initialRoute, customConfig) =>
       Detail: {
         screen: Detail,
         navigationOptions: {
-          headerTitle: "Photo"
+          headerTitle: "Explore"
         }
+      },
+      UserDetail: {
+        screen: UserDetail,
+        navigationOptions: ({ navigation }) => ({
+          headerTitle: navigation.getParam("username")
+        })
       }
     },
     {
       defaultNavigationOptions: {
-        headerLeft: () => null,
-        headerTitle: () => null,
+        headerBackTitle: " ",
+        headerTintColor: styles.blackColor,
         headerStyle: {
           ...stackStyles
         },
@@ -81,13 +88,7 @@ export default createBottomTabNavigator(
     },
     Notifications: {
       screen: stackFactory(Notifications, {
-        headerRight: () => <MessagesLink />,
-        headerTitle: () =>
-          <Image
-            style={{ height: 28 }}
-            resizeMode={"contain"}
-            source={require("../assets/logo.png")}
-          />
+        headerTitle: "Activity"
       }),
       navigationOptions: {
         tabBarIcon: ({ focused }) =>
@@ -103,13 +104,16 @@ export default createBottomTabNavigator(
     },
     Profile: {
       screen: stackFactory(Profile, {
-        headerRight: () => <MessagesLink />,
-        headerTitle: () =>
-          <Image
-            style={{ height: 28 }}
-            resizeMode={"contain"}
-            source={require("../assets/logo.png")}
-          />
+        headerTitle: "Profile",
+        cardStyle: {
+          backgroundColor: styles.greyColor
+        },
+        headerStyle: {
+          backgroundColor: styles.greyColor,
+          shadowOffset: {
+            height: 0
+          }
+        }
       }),
       navigationOptions: {
         tabBarIcon: ({ focused }) =>
@@ -118,7 +122,6 @@ export default createBottomTabNavigator(
     }
   },
   {
-    initialRouteName: "Search",
     tabBarOptions: {
       showLabel: false,
       style: {

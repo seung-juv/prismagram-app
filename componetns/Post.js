@@ -7,6 +7,7 @@ import constants from "../constants";
 import { Platform } from "react-native";
 import styles from "../styles";
 import { useMutation } from "react-apollo-hooks";
+import { withNavigation } from "react-navigation";
 
 const TOGGLE_LIKE = gql`
   mutation toggleLike($postId: String!) {
@@ -88,7 +89,7 @@ const CommentCount = styled.Text`
   color: ${styles.darkGreyColor};
 `;
 
-export default ({
+const Post = ({
   id,
   user,
   location,
@@ -96,7 +97,8 @@ export default ({
   likeCount: likeCountProp,
   caption,
   comments = [],
-  isLiked: isLikedProp
+  isLiked: isLikedProp,
+  navigation
 }) => {
   const [isLiked, setIsLiked] = useState(isLikedProp);
   const [likeCount, setLikeCount] = useState(likeCountProp);
@@ -117,10 +119,10 @@ export default ({
   return (
     <Container>
       <Header>
-        <Touchable>
+        <Touchable onPress={() => navigation.navigate("UserDetail", { username: user.username })}>
           <Avatar resizeMode={"contain"} source={{ uri: user.avatar }} />
         </Touchable>
-        <Touchable>
+        <Touchable onPress={() => navigation.navigate("UserDetail", { username: user.username })}>
           <HeaderUserContainer>
             <Username>
               {user.username}
@@ -195,3 +197,5 @@ export default ({
     </Container>
   );
 };
+
+export default withNavigation(Post);
