@@ -4,31 +4,65 @@ import SelectPhoto from "../screens/Photo/SelectPhoto";
 import TakePhoto from "../screens/Photo/TakePhoto";
 import UploadPhoto from "../screens/Photo/UploadPhoto";
 import { stackStyles, cardStyles } from "./config";
+import styles from "../styles";
 
 const PhotoTabs = createMaterialTopTabNavigator(
   {
-    SelectPhoto,
-    TakePhoto
+    Seelct: {
+      screen: SelectPhoto,
+      navigationOptions: {
+        tabBarLabel: "Library"
+      }
+    },
+    Take: {
+      screen: TakePhoto,
+      navigationOptions: {
+        tabBarLabel: "Photo"
+      }
+    }
   },
   {
-    tabBarPosition: "bottom"
+    tabBarPosition: "bottom",
+    tabBarOptions: {
+      style: {
+        paddingBottom: 20,
+        ...stackStyles
+      },
+      upperCaseLabel: false,
+      activeTintColor: styles.blackColor,
+      inactiveTintColor: styles.darkGreyColor,
+      labelStyle: {
+        fontWeight: "600"
+      }
+    }
   }
 );
 
 export default createStackNavigator(
   {
-    PhotoTabs,
-    UploadPhoto
+    Tabs: {
+      screen: PhotoTabs,
+      navigationOptions: {
+        title: "Recents"
+      }
+    },
+    Upload: {
+      screen: UploadPhoto,
+      navigationOptions: {
+        title: "Upload"
+      }
+    }
   },
   {
     defaultNavigationOptions: {
-      headerLeft: () => null,
       headerStyle: {
         ...stackStyles
       },
       cardStyle: {
         ...cardStyles
-      }
+      },
+      headerBackTitle: " ",
+      headerTintColor: styles.blackColor
     }
   }
 );
