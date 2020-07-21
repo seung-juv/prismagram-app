@@ -6,8 +6,8 @@ import propTypes from "prop-types";
 import styles from "../styles";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import constants from "../constants";
-import SquarePhoto from "./SquarePhoto";
 import Post from "./Post";
+import SquarePhotoContainer from "./SquarePhotoContainer";
 
 const ProfileHeader = styled.View`
   padding: 15px;
@@ -79,11 +79,6 @@ const Button = styled.View`
   align-items: center;
 `;
 
-const SquarePhotoContainer = styled.View`
-  flex-flow: row nowrap;
-  margin-left: -1px;
-`;
-
 const UserProfile = ({
   avatar,
   postsCount,
@@ -94,17 +89,6 @@ const UserProfile = ({
   posts
 }) => {
   const [isGrid, setIsgrid] = useState(true);
-  const post = () => {
-    if (posts && isGrid) {
-      return (
-        <SquarePhotoContainer>
-          {posts.map(post => <SquarePhoto key={post.id} {...post} />)}
-        </SquarePhotoContainer>
-      );
-    } else {
-      return posts.map(post => <Post key={post.id} {...post} />);
-    }
-  };
   return (
     <View>
       <ProfileHeader>
@@ -163,7 +147,9 @@ const UserProfile = ({
           </Button>
         </TouchableOpacity>
       </ButtonContainer>
-      {post()}
+      {posts && isGrid
+        ? <SquarePhotoContainer posts={posts} />
+        : posts.map(post => <Post key={post.id} {...post} />)}
     </View>
   );
 };

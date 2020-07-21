@@ -188,11 +188,12 @@ const Post = ({
             {caption}
           </Caption>
         </CaptionContainer>
-        <Touchable>
-          <CommentCount>
-            {comments.length >= 1 && `View all ${comments.length} comments`}
-          </CommentCount>
-        </Touchable>
+        {comments.length > 0 &&
+          <Touchable>
+            <CommentCount>
+              {comments.length >= 1 && `View all ${comments.length} comments`}
+            </CommentCount>
+          </Touchable>}
       </InfoContainer>
     </Container>
   );
