@@ -5,9 +5,8 @@ import propTypes from "prop-types";
 import { useQuery } from "react-apollo-hooks";
 import { SEARCH } from "./SearchQueries";
 import Loader from "../../../componetns/Loader";
-import SquarePhoto from "../../../componetns/SquarePhoto";
-import constants from "../../../constants";
 import SquarePhotoContainer from "../../../componetns/SquarePhotoContainer";
+import constants from "../../../constants";
 
 const LoaderWrapper = styled.View`
   flex: 1;
@@ -22,7 +21,6 @@ const SearchPresenter = ({ term, shouldFetch }) => {
     variables: {
       term
     },
-    skip: !shouldFetch,
     fetchPolicy: "network-only"
   });
   const onRefresh = async () => {
