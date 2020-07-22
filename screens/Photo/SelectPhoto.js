@@ -14,12 +14,12 @@ const Button = styled.TouchableOpacity`
   width: 100px;
   height: 30px;
   position: absolute;
-  right: 5px;
-  top: 15px;
+  right: 15px;
+  top: 75px;
   background-color: ${styles.blueColor};
   justify-content: center;
   align-items: center;
-  border-radius: 5px;
+  border-radius: 5px; 
 `;
 
 const Text= styled.Text`

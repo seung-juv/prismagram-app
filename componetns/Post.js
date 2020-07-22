@@ -127,7 +127,7 @@ const Post = ({
             <Username>
               {user.username}
             </Username>
-            {location &&
+            {!location === "" &&
               <Location>
                 {location}
               </Location>}
@@ -184,9 +184,10 @@ const Post = ({
               {user.username}
             </Username>
           </Touchable>
-          <Caption>
-            {caption}
-          </Caption>
+          {!caption === "" &&
+            <Caption>
+              {caption}
+            </Caption>}
         </CaptionContainer>
         {comments.length > 0 &&
           <Touchable>

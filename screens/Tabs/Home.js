@@ -8,7 +8,7 @@ import Post from "../../componetns/Post";
 import { POST_FRAGMENT } from "../../fragments";
 import constants from "../../constants";
 
-const FEED_QUERY = gql`
+export const FEED_QUERY = gql`
   {
     seeFeed {
       ...PostParts
