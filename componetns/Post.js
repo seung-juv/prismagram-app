@@ -58,7 +58,7 @@ const SlideImage = styled.Image`
 `;
 
 const IconsContainer = styled.View`
-  padding: 8px;
+  padding: 10px 12px;
   flex-flow: row nowrap;
 `;
 
@@ -66,7 +66,7 @@ const Icon = styled(Ionicons)`
   margin-right: 15px;
 `;
 
-const InfoContainer = styled.View`padding: 0 8px;`;
+const InfoContainer = styled.View`padding: 0 12px;`;
 
 const LikeCount = styled.Text`
   font-weight: 500;
@@ -159,7 +159,7 @@ const Post = ({
       <IconsContainer>
         <Touchable onPress={handleLike}>
           <Icon
-            size={24}
+            size={28}
             color={isLiked ? styles.redColor : styles.blackColor}
             name={
               Platform.OS === "ios"
@@ -169,7 +169,7 @@ const Post = ({
           />
         </Touchable>
         <Touchable>
-          <Icon size={24} name={Platform.OS === "ios" ? "ios-text" : "md-text"} />
+          <Icon size={28} name={Platform.OS === "ios" ? "ios-text" : "md-text"} />
         </Touchable>
       </IconsContainer>
       <InfoContainer>
