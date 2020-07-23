@@ -27,6 +27,48 @@ const Text= styled.Text`
   font-weight: 600; 
 `;
 
+const SquarePhotoWrapper = styled.View`
+  flex-flow: row nowrap;
+  margin-left: -1px;
+`;
+
+const SquarePhotoContainer = ({ photos, selected, changeSelected }) => {
+  const result = [];
+  const maxRow = 4;
+  let num = 0;
+  for (let i = 0; i <= photos.length; i += maxRow) {
+    const temp = photos.slice(i, i + maxRow);
+    result.push(
+      <SquarePhotoWrapper key={num}>
+        {temp.map(photo => <TouchableOpacity activeOpacity={1} key={photo.id} onPress={() => changeSelected(photo)}>
+            <Image
+              style={{
+                width: constants.width / 4 - 1, 
+                height: constants.width / 4 - 1,
+                opacity: photo.id === selected.id ? 0.5 : 1,
+                margin: 1
+              }}
+              source={{ uri: photo.uri }}
+            />
+          </TouchableOpacity>
+        )}
+      </SquarePhotoWrapper>
+    );
+    num++;
+  }
+
+  const afadf = photos.map(photo =>
+    <TouchableOpacity activeOpacity={1} key={photo.id} onPress={() => changeSelected(photo)}>
+    <Image
+      style={{ width:constants.width / 4, height: constants.width / 4, opacity: photo.id === selected.id ? 0.5 : 1 }}
+      source={{uri: photo.uri}}
+    />
+    </TouchableOpacity>
+  )
+
+  return result;
+};
+
 export default ({navigation}) => {
   const [loading, setLoading] = useState(true);
   const [hasPermission, setHasPermission] = useState(false);
@@ -35,19 +77,20 @@ export default ({navigation}) => {
   const changeSelected = photo => {
     setSelected(photo)
   }
+  
   const getPhotos = async () => {
     try {
       const { assets } = await MediaLibrary.getAssetsAsync();
       const [firstPhoto] = assets;
       setSelected(firstPhoto);
       setAllPhotos(assets);
-      
     } catch (e) {
       console.log(e);
     } finally {
       setLoading(false);
     }
   };
+
   const askPermission = async () => {
     try {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -60,12 +103,15 @@ export default ({navigation}) => {
       hasPermission(false);
     }
   };
+
   const handleSelected = () => {
     navigation.navigate("Upload", { photo: selected });
   }
+
   useEffect(() => {
     askPermission();
   }, []);
+
   return (
     <View>
       {loading
@@ -82,16 +128,10 @@ export default ({navigation}) => {
                     <Text>Select Photo</Text>
                   </Button>
                   
-                  <ScrollView contentContainerStyle={{flexDirection: "row", flexWrap: "wrap", paddingBottom: 250}}>
-                    {allPhotos.map(photo =>
-                      <TouchableOpacity activeOpacity={1} key={photo.id} onPress={() => changeSelected(photo)}>
-                      <Image
-                        style={{ width:constants.width / 4, height: constants.width / 4, opacity: photo.id === selected.id ? 0.5 : 1 }}
-                        source={{uri: photo.uri}}
-                      />
-                      </TouchableOpacity>
-                    )}
+                  <ScrollView contentContainerStyle={{paddingBottom: 250}}>
+                    <SquarePhotoContainer photos={allPhotos} selected={selected} changeSelected={changeSelected} />
                   </ScrollView>
+                  
                 </>
                 )
               : null}

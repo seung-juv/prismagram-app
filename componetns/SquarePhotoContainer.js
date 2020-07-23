@@ -10,9 +10,10 @@ const SquarePhotoWrapper = styled.View`
 
 const SquarePhotoContainer = ({ posts }) => {
   const result = [];
+  const maxRow = 3;
   let num = 0;
-  for (let i = 0; i <= posts.length; i += 3) {
-    const temp = posts.slice(i, i + 3);
+  for (let i = 0; i <= posts.length; i += maxRow) {
+    const temp = posts.slice(i, i + maxRow);
     result.push(
       <SquarePhotoWrapper key={num}>
         {temp.map(post => <SquarePhoto key={post.id} {...post} />)}

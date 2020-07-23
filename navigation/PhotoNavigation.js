@@ -33,6 +33,9 @@ const PhotoTabs = createMaterialTopTabNavigator(
       inactiveTintColor: styles.darkGreyColor,
       labelStyle: {
         fontWeight: "600"
+      },
+      indicatorStyle: {
+        backgroundColor: null
       }
     }
   }

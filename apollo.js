@@ -1,5 +1,5 @@
 const options = {
-  uri: "http://localhost:4000"
+  uri: "http://kingsky32.co.kr:4000"
 };
 
 export default options;
