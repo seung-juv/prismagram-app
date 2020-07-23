@@ -20,7 +20,7 @@ const Container = styled.View`margin-bottom: 15px;`;
 const Header = styled.View`
   flex-flow: row nowrap;
   align-items: center;
-  padding: 8px;
+  padding: 12px 8px;
 `;
 
 const Touchable = styled.TouchableOpacity`
@@ -37,13 +37,13 @@ const Avatar = styled.Image`
 const HeaderUserContainer = styled.View`margin-left: 7px;`;
 
 const Username = styled.Text`
-  font-weight: 500;
-  font-size: 10px;
+  font-weight: 600;
+  font-size: 13px;
 `;
 
 const Location = styled.Text`
   margin-top: 1px;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 300;
 `;
 
@@ -70,20 +70,20 @@ const InfoContainer = styled.View`padding: 0 8px;`;
 
 const LikeCount = styled.Text`
   font-weight: 500;
-  font-size: 10px;
+  font-size: 13px;
   margin-bottom: 5px;
 `;
 
 const CaptionContainer = styled.View`flex-flow: row nowrap;`;
 
 const Caption = styled.Text`
-  font-size: 10px;
+  font-size: 13px;
   margin-left: 3px;
   font-weight: 300;
 `;
 
 const CommentCount = styled.Text`
-  font-size: 10px;
+  font-size: 13px;
   margin-top: 5px;
   font-weight: 300;
   color: ${styles.darkGreyColor};

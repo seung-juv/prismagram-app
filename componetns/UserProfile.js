@@ -17,7 +17,7 @@ const ProfileHeader = styled.View`
 const HeaderColumn = styled.View``;
 const ProfileStat = styled.View`
   flex-flow: row nowrap;
-  margin-left: 30px;
+  margin-left: 50px;
 `;
 const Stat = styled.View`
   margin-right: 25px;
@@ -25,12 +25,12 @@ const Stat = styled.View`
 `;
 const StatNumber = styled.Text`
   text-align: center;
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 500;
 `;
 const StatName = styled.Text`
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 300;
 `;
 const ProfileMeta = styled.View`
@@ -58,8 +58,9 @@ const EditProfileContainer = styled.View`
 const EditProfileButton = styled.Text`
   flex: 1;
   padding: 5px;
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
+  font-weight: 500;
   background-color: #fff;
   border-radius: 4px;
   border: 1px solid ${styles.lightGreyColor};
