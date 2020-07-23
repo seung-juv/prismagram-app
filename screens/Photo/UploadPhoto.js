@@ -68,15 +68,15 @@ export default ({ navigation }) => {
       setIsLoading(true);
       const {
         data: { file: { path } }
-      } = await axios.post("http://localhost:4000/api/upload", formData, {
+      } = await axios.post("http://prismagram.kingsky32.co.kr:4000/api/upload", formData, {
         headers: {
           "content-type": "multipart/form-data"
         }
       });
-      console.log(path);
+      const filePath = `http://prismagram.kingsky32.co.kr:4000/${path}`;
       const { data: { upload } } = await uploadMutation({
         variables: {
-          files: [path],
+          files: [filePath],
           caption: captionInput.value,
           location: locationInput.value
         }
