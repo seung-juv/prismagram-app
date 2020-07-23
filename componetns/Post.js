@@ -127,7 +127,7 @@ const Post = ({
             <Username>
               {user.username}
             </Username>
-            {!location === "" &&
+            {!location == "" &&
               <Location>
                 {location}
               </Location>}
@@ -184,7 +184,7 @@ const Post = ({
               {user.username}
             </Username>
           </Touchable>
-          {!caption === "" &&
+          {!caption == "" &&
             <Caption>
               {caption}
             </Caption>}
