@@ -1,12 +1,12 @@
 # Prismagram iOS & Android App
 
 Screens:
-- [v] Home
-- [v] Search
-- [v] Upload
+- [x] Home
+- [x] Search
+- [x] Upload
 - [ ] Notifications (Chanllenge)
-- [v] Profile
+- [x] Profile
 - [ ] Edit Prfile (Chanllenge)
-- [v] Photo Detail
+- [x] Photo Detail
 - [ ] Photo Comments (Chanllenge)
 - [ ] Photo Likes (Chanllenge)
