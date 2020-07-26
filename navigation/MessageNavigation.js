@@ -11,8 +11,10 @@ export default createStackNavigator(
   },
   {
     defaultNavigationOptions: {
-      headerBackTitle: " ",
+      headerBackTitle: "Cancel",
+      headerBackTitleStyle: styles.backTitleStyle,
       headerLeftContainerStyle: styles.LeftContainerStyle,
+      headerBackImage: () => null,
       headerTintColor: styles.blackColor,
       headerStyle: {
         ...stackStyles

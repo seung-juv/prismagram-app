@@ -1,5 +1,3 @@
-import React from "react";
-import { Text } from "react-native";
 import { createMaterialTopTabNavigator } from "react-navigation-tabs";
 import { createStackNavigator } from "react-navigation-stack";
 import SelectPhoto from "../screens/Photo/SelectPhoto";
