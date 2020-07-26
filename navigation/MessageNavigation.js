@@ -11,6 +11,7 @@ export default createStackNavigator(
   },
   {
     defaultNavigationOptions: {
+      headerTitle: "Direct",
       headerBackTitle: "Cancel",
       headerBackTitleStyle: styles.backTitleStyle,
       headerLeftContainerStyle: styles.LeftContainerStyle,

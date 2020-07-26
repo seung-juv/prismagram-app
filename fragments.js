@@ -42,7 +42,36 @@ export const USER_FRAGMENT = gql`
     bio
     followingCount
     followersCount
-    postsCount
+    postsCount,
+    rooms {
+      id,
+      participants {
+        id,
+        username,
+        avatar
+      },
+      messages {
+        id,
+        text,
+        from {
+          id,
+          username,
+          avatar
+        },
+        to {
+          id,
+          username,
+          avatar
+        },
+        room {
+          id
+        },
+        createdAt,
+        updatedAt
+      },
+      createdAt,
+      updatedAt
+    },
     posts {
       ...PostParts
     }
