@@ -12,6 +12,7 @@ export default createStackNavigator(
   {
     defaultNavigationOptions: {
       headerBackTitle: " ",
+      headerLeftContainerStyle: styles.LeftContainerStyle,
       headerTintColor: styles.blackColor,
       headerStyle: {
         ...stackStyles

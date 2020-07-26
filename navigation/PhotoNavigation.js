@@ -67,7 +67,8 @@ export default createStackNavigator(
         ...cardStyles
       },
       headerBackTitle: "Cancel",
-      headerBackTitleStyle: styles.back,
+      headerBackTitleStyle: styles.backTitleStyle,
+      headerLeftContainerStyle: styles.LeftContainerStyle,
       headerBackImage: () => null,
       headerTintColor: styles.blackColor
     }

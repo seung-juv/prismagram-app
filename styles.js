@@ -6,5 +6,6 @@ export default {
   redColor: "#ED4956",
   blueColor: "#3897f0",
   darkBlueColor: "#003569",
-  back: { fontSize: 14, left: 15 }
+  backTitleStyle: { fontSize: 14 },
+  LeftContainerStyle: { left: 15 }
 };
