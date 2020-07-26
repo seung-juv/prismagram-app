@@ -2,6 +2,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import Messages from "../screens/Messages/Messages";
 import Message from "../screens/Messages/Message";
 import { stackStyles, cardStyles } from "./config";
+import styles from "../styles";
 
 export default createStackNavigator(
   {
@@ -10,7 +11,8 @@ export default createStackNavigator(
   },
   {
     defaultNavigationOptions: {
-      headerLeft: () => null,
+      headerBackTitle: " ",
+      headerTintColor: styles.blackColor,
       headerStyle: {
         ...stackStyles
       },

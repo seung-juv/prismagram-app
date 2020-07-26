@@ -5,5 +5,6 @@ export default {
   lightGreyColor: "#e6e6e6",
   redColor: "#ED4956",
   blueColor: "#3897f0",
-  darkBlueColor: "#003569"
+  darkBlueColor: "#003569",
+  back: { fontSize: 14, left: 15 }
 };

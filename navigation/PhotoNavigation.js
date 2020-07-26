@@ -1,3 +1,5 @@
+import React from "react";
+import { Text } from "react-native";
 import { createMaterialTopTabNavigator } from "react-navigation-tabs";
 import { createStackNavigator } from "react-navigation-stack";
 import SelectPhoto from "../screens/Photo/SelectPhoto";
@@ -64,7 +66,9 @@ export default createStackNavigator(
       cardStyle: {
         ...cardStyles
       },
-      headerBackTitle: " ",
+      headerBackTitle: "Cancel",
+      headerBackTitleStyle: styles.back,
+      headerBackImage: () => null,
       headerTintColor: styles.blackColor
     }
   }
