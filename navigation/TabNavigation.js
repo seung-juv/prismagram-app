@@ -40,6 +40,7 @@ const stackFactory = (initialRoute, customConfig) =>
       defaultNavigationOptions: {
         headerBackTitle: " ",
         headerTintColor: styles.blackColor,
+        headerLeftContainerStyle: styles.LeftContainerStyle,
         headerStyle: {
           ...stackStyles
         },

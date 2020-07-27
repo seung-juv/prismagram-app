@@ -6,8 +6,18 @@ import styles from "../styles";
 
 export default createStackNavigator(
   {
-    Messages,
-    Message
+    Messages: {
+      screen: Messages,
+      navigationOptions: {
+        headerBackImage: () => null
+      }
+    },
+    Message: {
+      screen: Message,
+      navigationOptions: {
+        headerBackTitle: " "
+      }
+    }
   },
   {
     defaultNavigationOptions: {
@@ -15,7 +25,6 @@ export default createStackNavigator(
       headerBackTitle: "Cancel",
       headerBackTitleStyle: styles.backTitleStyle,
       headerLeftContainerStyle: styles.LeftContainerStyle,
-      headerBackImage: () => null,
       headerTintColor: styles.blackColor,
       headerStyle: {
         ...stackStyles

@@ -29,7 +29,7 @@ const Status = styled.Text`
   padding-right: 150px;
 `;
 
-export default ({ id, messages, participants, createdAt, updatedAt, me, navigation }) => {
+export default ({ id, messages, participants, me, navigation }) => {
   const [opponent] = participants.filter(user => user.username !== me && user.username);
   const lastestMessage = messages[messages.length - 1];
   return (
