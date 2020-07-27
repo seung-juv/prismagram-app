@@ -24,7 +24,7 @@ const LoaderWrapper = styled.View`
   align-items: center;
 `;
 
-export default ({ navigation }) => {
+export default () => {
   const [refreshing, setRefreshing] = useState(false);
   const { data, loading, refetch } = useQuery(ME);
   const onRefresh = async () => {

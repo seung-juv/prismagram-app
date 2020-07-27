@@ -6,14 +6,8 @@ import { useQuery } from "react-apollo-hooks";
 import { ScrollView } from "react-native-gesture-handler";
 import { RefreshControl } from "react-native";
 import MessageCard from "../../componetns/MessageCard";
-
-const View = styled.View`
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-`;
-
-const Text = styled.Text``;
+import Loader from "../../componetns/Loader";
+import constants from "../../constants";
 
 const ME = gql`
   {
@@ -24,9 +18,16 @@ const ME = gql`
   ${USER_FRAGMENT}
 `;
 
-export default () => {
+const LoaderWrapper = styled.View`
+  flex: 1;
+  height: ${constants.height / 1.25}px;
+  justify-content: center;
+  align-items: center;
+`;
+
+export default ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
-  const { data: { me }, loading, refetch } = useQuery(ME);
+  const { data, loading, refetch } = useQuery(ME);
   const onRefresh = async () => {
     try {
       setRefreshing(true);
@@ -39,9 +40,16 @@ export default () => {
   };
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-      {!loading &&
-        me.rooms &&
-        me.rooms.map(room => <MessageCard key={room.id} me={me.username} {...room} />)}
+      {loading
+        ? <LoaderWrapper>
+            <Loader />
+          </LoaderWrapper>
+        : data &&
+          data.me &&
+          data.me.rooms &&
+          data.me.rooms.map(room =>
+            <MessageCard key={room.id} me={data.me.username} navigation={navigation} {...room} />
+          )}
     </ScrollView>
   );
 };
