@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import { ScrollView, TextInput, KeyboardAvoidingView } from "react-native";
+import AutoScroll from "react-native-auto-scroll";
+import styled from "styled-components";
 import gql from "graphql-tag";
 import { useQuery, useMutation, useSubscription } from "react-apollo-hooks";
 import withSuspense from "../../componetns/withSuspense";
@@ -57,18 +58,21 @@ const Message = () => {
       roomId: roomId
     }
   });
+
   const handleNewMessage = () => {
     if (data !== undefined) {
       const { newMessage } = data;
       setMessages(previous => [...previous, newMessage]);
     }
   };
+
   useEffect(
     () => {
       handleNewMessage();
     },
     [data]
   );
+
   const [sendMessageMutation] = useMutation(SEND_MESSAGE, {
     variables: {
       toId: toId,
@@ -84,6 +88,7 @@ const Message = () => {
       }
     ]
   });
+
   const { data: { messages: oldMessages }, error } = useQuery(GET_MESSAGES, {
     variables: {
       roomId: roomId
@@ -97,6 +102,8 @@ const Message = () => {
       return;
     }
     try {
+      setMessages(oldMessages => [...oldMessages, { text: message }]);
+      setMessage("");
       await sendMessageMutation();
     } catch (error) {
       console.log(error);
@@ -104,7 +111,7 @@ const Message = () => {
   };
   return (
     <KeyboardAvoidingView style={{ flex: 1, alignItems: "center" }} enabled behavior="padding">
-      <ScrollView
+      <AutoScroll
         contentContainerStyle={{
           paddingVertical: 5,
           justifyContent: "flex-end",
@@ -122,7 +129,7 @@ const Message = () => {
               </MyMessages>
           )}
         </MyMessageWrapper>
-      </ScrollView>
+      </AutoScroll>
       <TextInput
         placeholder="Message..."
         style={{
