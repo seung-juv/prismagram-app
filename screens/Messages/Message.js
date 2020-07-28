@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { View, Text, ScrollView, TextInput, KeyboardAvoidingView } from "react-native";
+import { ScrollView, TextInput, KeyboardAvoidingView } from "react-native";
 import gql from "graphql-tag";
 import { useQuery, useMutation, useSubscription } from "react-apollo-hooks";
 import withSuspense from "../../componetns/withSuspense";
@@ -40,8 +40,8 @@ const MyMessageWrapper = styled.View`
 
 const MyMessages = styled.View`
   padding: 15px;
-  margin: 0px 15px 10px;
-  border-radius: 500px;
+  margin: 0px 5px 10px;
+  border-radius: 30px;
   background-color: ${styles.lightGreyColor};
   align-self: flex-end;
 `;
@@ -75,7 +75,14 @@ const Message = () => {
       message: message,
       roomId: roomId
     },
-    refetchQueries: () => [{ query: GET_MESSAGES }]
+    refetchQueries: () => [
+      {
+        query: GET_MESSAGES,
+        variables: {
+          roomId: roomId
+        }
+      }
+    ]
   });
   const { data: { messages: oldMessages }, error } = useQuery(GET_MESSAGES, {
     variables: {
@@ -96,11 +103,10 @@ const Message = () => {
     }
   };
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} enabled behavior="padding">
+    <KeyboardAvoidingView style={{ flex: 1, alignItems: "center" }} enabled behavior="padding">
       <ScrollView
         contentContainerStyle={{
-          paddingVertical: 40,
-          flex: 1,
+          paddingVertical: 5,
           justifyContent: "flex-end",
           alignItems: "center"
         }}
@@ -116,22 +122,22 @@ const Message = () => {
               </MyMessages>
           )}
         </MyMessageWrapper>
-        <TextInput
-          placeholder="Message..."
-          style={{
-            marginTop: 50,
-            width: "90%",
-            borderRadius: 50,
-            paddingVertical: 15,
-            paddingHorizontal: 20,
-            backgroundColor: "#f2f2f2"
-          }}
-          returnKeyType="send"
-          value={message}
-          onChangeText={onChangeText}
-          onSubmitEditing={onSubMit}
-        />
       </ScrollView>
+      <TextInput
+        placeholder="Message..."
+        style={{
+          marginBottom: 25,
+          width: "90%",
+          borderRadius: 50,
+          paddingVertical: 15,
+          paddingHorizontal: 20,
+          backgroundColor: "#f2f2f2"
+        }}
+        returnKeyType="send"
+        value={message}
+        onChangeText={onChangeText}
+        onSubmitEditing={onSubMit}
+      />
     </KeyboardAvoidingView>
   );
 };
