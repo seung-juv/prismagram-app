@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { ScrollView, TextInput, KeyboardAvoidingView } from "react-native";
-import AutoScroll from "react-native-auto-scroll";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { useQuery, useMutation, useSubscription } from "react-apollo-hooks";
 import withSuspense from "../../componetns/withSuspense";
 import styles from "../../styles";
+import constants from "../../constants";
 
 const GET_MESSAGES = gql`
   query messages($roomId: String!) {
@@ -36,6 +36,7 @@ const NEW_MESSAGE = gql`
 
 const MyMessageWrapper = styled.View`
   flex-flow: column nowrap;
+  width: ${constants.width - 15}px;
   flex: 1;
 `;
 
@@ -49,10 +50,11 @@ const MyMessages = styled.View`
 
 const MyMessage = styled.Text`text-align: right;`;
 
-const Message = () => {
+export default ({ navigation }) => {
   const [message, setMessage] = useState("");
   const toId = "ckcym4okauwnq099955fb3iwz";
-  const roomId = "ckcyp5q30f1wg0975jltods7m";
+  const roomId = navigation.getParam("roomId");
+  let viewNum = -5;
   const { data } = useSubscription(NEW_MESSAGE, {
     variables: {
       roomId: roomId
@@ -62,7 +64,10 @@ const Message = () => {
   const handleNewMessage = () => {
     if (data !== undefined) {
       const { newMessage } = data;
-      setMessages(previous => [...previous, newMessage]);
+      setMessages(previous => {
+        const temp = previous.slice(viewNum);
+        return [...temp];
+      });
     }
   };
 
@@ -92,26 +97,35 @@ const Message = () => {
   const { data: { messages: oldMessages }, error } = useQuery(GET_MESSAGES, {
     variables: {
       roomId: roomId
-    },
-    suspend: true
+    }
   });
-  const [messages, setMessages] = useState(oldMessages || []);
+
+  const [messages, setMessages] = useState(oldMessages.slice(viewNum) || []);
+
   const onChangeText = text => setMessage(text);
+
+  let temp = 0;
+
   const onSubMit = async () => {
     if (message === "") {
       return;
     }
     try {
-      setMessages(oldMessages => [...oldMessages, { text: message }]);
+      setMessages(oldMessages => [...oldMessages, { id: temp++, text: message }]);
       setMessage("");
       await sendMessageMutation();
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
-    <KeyboardAvoidingView style={{ flex: 1, alignItems: "center" }} enabled behavior="padding">
-      <AutoScroll
+    <KeyboardAvoidingView
+      style={{ flex: 1, alignItems: "center" }}
+      keyboardVerticalOffset={constants.height / 12}
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+    >
+      <ScrollView
         contentContainerStyle={{
           paddingVertical: 5,
           justifyContent: "flex-end",
@@ -129,7 +143,7 @@ const Message = () => {
               </MyMessages>
           )}
         </MyMessageWrapper>
-      </AutoScroll>
+      </ScrollView>
       <TextInput
         placeholder="Message..."
         style={{
@@ -138,7 +152,8 @@ const Message = () => {
           borderRadius: 50,
           paddingVertical: 15,
           paddingHorizontal: 20,
-          backgroundColor: "#f2f2f2"
+          backgroundColor: "#f2f2f2",
+          fontSize: 14
         }}
         returnKeyType="send"
         value={message}
@@ -148,5 +163,3 @@ const Message = () => {
     </KeyboardAvoidingView>
   );
 };
-
-export default withSuspense(Message);
