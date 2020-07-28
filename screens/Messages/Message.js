@@ -1,23 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView, TextInput, KeyboardAvoidingView } from "react-native";
 import styled from "styled-components";
+import { View, Text, ScrollView, TextInput, KeyboardAvoidingView } from "react-native";
+import gql from "graphql-tag";
+import { useQuery, useMutation, useSubscription } from "react-apollo-hooks";
 import withSuspense from "../../componetns/withSuspense";
-import { gql } from "apollo-boost";
-import { useSubscription, useMutation, useQuery } from "react-apollo-hooks";
+import styles from "../../styles";
 
 const GET_MESSAGES = gql`
   query messages($roomId: String!) {
     messages(roomId: $roomId) {
       id
       text
-      from {
-        avatar
-        username
-      }
-      to {
-        avatar
-        username
-      }
     }
   }
 `;
@@ -40,12 +33,20 @@ const NEW_MESSAGE = gql`
   }
 `;
 
-const Wrapper = styled.View`
-  justify-content: center;
-  align-items: center;
+const MyMessageWrapper = styled.View`
+  flex-flow: column nowrap;
   flex: 1;
-  padding: 12px 8px;
 `;
+
+const MyMessages = styled.View`
+  padding: 15px;
+  margin: 0px 15px 10px;
+  border-radius: 500px;
+  background-color: ${styles.lightGreyColor};
+  align-self: flex-end;
+`;
+
+const MyMessage = styled.Text`text-align: right;`;
 
 const Message = () => {
   const [message, setMessage] = useState("");
@@ -98,30 +99,31 @@ const Message = () => {
     <KeyboardAvoidingView style={{ flex: 1 }} enabled behavior="padding">
       <ScrollView
         contentContainerStyle={{
-          paddingVertical: 50,
+          paddingVertical: 40,
           flex: 1,
           justifyContent: "flex-end",
           alignItems: "center"
         }}
       >
-        {messages.map(
-          m =>
-            m &&
-            <View key={m.id} style={{ marginBottom: 10 }}>
-              <Text>
-                {console.log(roomId)}
-                {m.text}
-              </Text>
-            </View>
-        )}
+        <MyMessageWrapper>
+          {messages.map(
+            m =>
+              m &&
+              <MyMessages key={m.id}>
+                <MyMessage>
+                  {m.text}
+                </MyMessage>
+              </MyMessages>
+          )}
+        </MyMessageWrapper>
         <TextInput
-          placeholder="Type a message"
+          placeholder="Message..."
           style={{
             marginTop: 50,
             width: "90%",
-            borderRadius: 10,
+            borderRadius: 50,
             paddingVertical: 15,
-            paddingHorizontal: 10,
+            paddingHorizontal: 20,
             backgroundColor: "#f2f2f2"
           }}
           returnKeyType="send"
