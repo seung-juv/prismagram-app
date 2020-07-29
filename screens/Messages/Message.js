@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ScrollView, TextInput, KeyboardAvoidingView } from "react-native";
 import styled from "styled-components";
 import gql from "graphql-tag";
@@ -6,6 +6,7 @@ import { useQuery, useMutation, useSubscription } from "react-apollo-hooks";
 import withSuspense from "../../componetns/withSuspense";
 import styles from "../../styles";
 import constants from "../../constants";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const GET_MESSAGES = gql`
   query messages($roomId: String!) {
@@ -50,11 +51,28 @@ const MyMessages = styled.View`
 
 const MyMessage = styled.Text`text-align: right;`;
 
+const TextInputWarpper = styled.View`
+  margin-bottom: 25px;
+  width: ${constants.width - 15}px;
+  flex-flow: row nowrap;
+  border-radius: 50px;
+  padding: 15px 15px;
+  background-color: #f2f2f2;
+`;
+
+const Send = styled.Text`
+  color: ${styles.blueColor};
+  font-size: 14px;
+  font-weight: 500;
+`;
+
+let temp = 0;
+
 export default ({ navigation }) => {
   const [message, setMessage] = useState("");
   const toId = "ckcym4okauwnq099955fb3iwz";
   const roomId = navigation.getParam("roomId");
-  let viewNum = -5;
+  let viewNum = -8;
   const { data } = useSubscription(NEW_MESSAGE, {
     variables: {
       roomId: roomId
@@ -104,7 +122,8 @@ export default ({ navigation }) => {
 
   const onChangeText = text => setMessage(text);
 
-  let temp = 0;
+  const scrollViewRef = useRef();
+  const onScrollToEnd = () => scrollViewRef.current.scrollToEnd({ animated: true });
 
   const onSubMit = async () => {
     if (message === "") {
@@ -113,6 +132,7 @@ export default ({ navigation }) => {
     try {
       setMessages(oldMessages => [...oldMessages, { id: temp++, text: message }]);
       setMessage("");
+      onScrollToEnd();
       await sendMessageMutation();
     } catch (error) {
       console.log(error);
@@ -123,6 +143,7 @@ export default ({ navigation }) => {
     <KeyboardAvoidingView
       style={{ flex: 1, alignItems: "center" }}
       keyboardVerticalOffset={constants.height / 12}
+      enabled
       behavior={Platform.OS == "ios" ? "padding" : "height"}
     >
       <ScrollView
@@ -131,6 +152,8 @@ export default ({ navigation }) => {
           justifyContent: "flex-end",
           alignItems: "center"
         }}
+        ref={scrollViewRef}
+        onContentSizeChange={onScrollToEnd}
       >
         <MyMessageWrapper>
           {messages.map(
@@ -144,22 +167,24 @@ export default ({ navigation }) => {
           )}
         </MyMessageWrapper>
       </ScrollView>
-      <TextInput
-        placeholder="Message..."
-        style={{
-          marginBottom: 25,
-          width: "90%",
-          borderRadius: 50,
-          paddingVertical: 15,
-          paddingHorizontal: 20,
-          backgroundColor: "#f2f2f2",
-          fontSize: 14
-        }}
-        returnKeyType="send"
-        value={message}
-        onChangeText={onChangeText}
-        onSubmitEditing={onSubMit}
-      />
+      <TextInputWarpper>
+        <TextInput
+          placeholder="Message..."
+          style={{
+            fontSize: 14,
+            flex: 1
+          }}
+          returnKeyType="send"
+          blurOnSubmit={false}
+          value={message}
+          onTouchEnd={() => setTimeout(onScrollToEnd, 400)}
+          onChangeText={onChangeText}
+          onSubmitEditing={onSubMit}
+        />
+        <TouchableOpacity onPress={onSubMit}>
+          <Send>Send</Send>
+        </TouchableOpacity>
+      </TextInputWarpper>
     </KeyboardAvoidingView>
   );
 };
