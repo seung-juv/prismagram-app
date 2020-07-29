@@ -66,8 +66,6 @@ const Send = styled.Text`
   font-weight: 500;
 `;
 
-let temp = 0;
-
 const Message = ({ navigation }) => {
   const [message, setMessage] = useState("");
   const opponent = navigation.getParam("opponent");
@@ -80,8 +78,6 @@ const Message = ({ navigation }) => {
       roomId: roomId
     }
   });
-
-  console.log(data);
 
   const handleNewMessage = () => {
     if (data !== undefined) {
@@ -135,7 +131,6 @@ const Message = ({ navigation }) => {
       return;
     }
     try {
-      setMessages(oldMessages => [...oldMessages, { id: temp++, text: message }]);
       setMessage("");
       onScrollToEnd();
       await sendMessageMutation();

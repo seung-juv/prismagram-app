@@ -9,6 +9,7 @@ import { persistCache } from "apollo-cache-persist";
 import { ApolloProvider } from "react-apollo-hooks";
 import { ApolloClient } from "apollo-boost";
 import { HttpLink } from "apollo-link-http";
+import { setContext } from "apollo-link-context";
 import { onError } from "apollo-link-error";
 import { ApolloLink, split } from "apollo-link";
 import { WebSocketLink } from "apollo-link-ws";
@@ -33,10 +34,10 @@ export default function App() {
         cache,
         storage: AsyncStorage
       });
+      const token = await AsyncStorage.getItem("jwt");
       const client = new ApolloClient({
         cache,
         request: async operation => {
-          const token = await AsyncStorage.getItem("jwt");
           return operation.setContext({
             headers: {
               Authorization: `Bearer ${token}`
@@ -73,8 +74,7 @@ export default function App() {
               }
             })
           )
-        ]),
-        uri: "http://prismagram.kingsky32.co.kr:4000"
+        ])
       });
       const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
       if (!isLoggedIn || isLoggedIn === "false") {

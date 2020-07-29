@@ -1,7 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import gql from "graphql-tag";
+import { useQuery, useMutation, useSubscription } from "react-apollo-hooks";
 import styles from "../styles";
 import { TouchableOpacity } from "react-native-gesture-handler";
+
+const GET_MESSAGES = gql`
+  query messages($roomId: String!) {
+    messages(roomId: $roomId) {
+      id
+      text
+    }
+  }
+`;
+
+const NEW_MESSAGE = gql`
+  subscription newMessage($roomId: String!) {
+    newMessage(roomId: $roomId) {
+      id
+      text
+    }
+  }
+`;
 
 const Wrapper = styled.View`
   flex-flow: row nowrap;
@@ -29,9 +49,41 @@ const Status = styled.Text`
   padding-right: 150px;
 `;
 
-export default ({ id, messages, participants, me, navigation }) => {
+export default ({ id, participants, me, navigation }) => {
   const [opponent] = participants.filter(user => user.username !== me && user.username);
-  const lastestMessage = messages[messages.length - 1];
+  const roomId = id;
+
+  const { data: { messages: oldMessages }, error } = useQuery(GET_MESSAGES, {
+    variables: {
+      roomId: roomId
+    }
+  });
+
+  const [messages, setMessages] = useState(oldMessages || []);
+
+  const { data } = useSubscription(NEW_MESSAGE, {
+    variables: {
+      roomId: roomId
+    }
+  });
+
+  const handleNewMessage = () => {
+    if (data !== undefined) {
+      const { newMessage } = data;
+      setMessages(previous => {
+        const temp = previous;
+        return [...temp, newMessage];
+      });
+    }
+  };
+
+  useEffect(
+    () => {
+      handleNewMessage();
+    },
+    [data]
+  );
+
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate("Message", { roomId: id, opponent: opponent })}
@@ -43,7 +95,7 @@ export default ({ id, messages, participants, me, navigation }) => {
             {opponent && opponent.username}
           </Username>
           <Status numberOfLines={1} eliellipsizeMode="tail">
-            {lastestMessage.text}
+            {messages[messages.length - 1].text}
           </Status>
         </MetaWrapper>
       </Wrapper>
