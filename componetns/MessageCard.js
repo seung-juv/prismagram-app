@@ -33,7 +33,9 @@ export default ({ id, messages, participants, me, navigation }) => {
   const [opponent] = participants.filter(user => user.username !== me && user.username);
   const lastestMessage = messages[messages.length - 1];
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Message", { roomId: id })}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate("Message", { roomId: id, opponent: opponent })}
+    >
       <Wrapper>
         <Avatar source={{ uri: opponent && opponent.avatar }} />
         <MetaWrapper>

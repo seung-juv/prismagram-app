@@ -6,14 +6,17 @@ import * as Font from "expo-font";
 import AsyncStorage from "@react-native-community/async-storage";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { persistCache } from "apollo-cache-persist";
-import ApolloClient from "apollo-boost";
-import { ThemeProvider } from "styled-components";
 import { ApolloProvider } from "react-apollo-hooks";
-import apolloClientOptions from "./apollo";
+import { ApolloClient } from "apollo-boost";
+import { HttpLink } from "apollo-link-http";
+import { onError } from "apollo-link-error";
+import { ApolloLink, split } from "apollo-link";
+import { WebSocketLink } from "apollo-link-ws";
+import { getMainDefinition } from "apollo-utilities";
+import { ThemeProvider } from "styled-components";
 import styles from "./styles";
 import NavController from "./componetns/NavController";
 import { AuthProvider } from "./AuthContext";
-import { Token } from "graphql";
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -40,7 +43,38 @@ export default function App() {
             }
           });
         },
-        ...apolloClientOptions
+        link: ApolloLink.from([
+          onError(({ graphQLErrors, networkError }) => {
+            if (graphQLErrors)
+              graphQLErrors.map(({ message, locations, path }) =>
+                console.log(
+                  `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+                )
+              );
+            if (networkError) console.log(`[Network error]: ${networkError}`);
+          }),
+          split(
+            ({ query }) => {
+              const definition = getMainDefinition(query);
+              return (
+                definition.kind === "OperationDefinition" && definition.operation === "subscription"
+              );
+            },
+            new WebSocketLink({
+              uri: `ws://prismagram.kingsky32.co.kr:4000/`,
+              options: {
+                reconnect: true
+              }
+            }),
+            new HttpLink({
+              uri: "http://prismagram.kingsky32.co.kr:4000",
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            })
+          )
+        ]),
+        uri: "http://prismagram.kingsky32.co.kr:4000"
       });
       const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
       if (!isLoggedIn || isLoggedIn === "false") {

@@ -68,23 +68,27 @@ const Send = styled.Text`
 
 let temp = 0;
 
-export default ({ navigation }) => {
+const Message = ({ navigation }) => {
   const [message, setMessage] = useState("");
-  const toId = "ckcym4okauwnq099955fb3iwz";
+  const opponent = navigation.getParam("opponent");
+  const toId = opponent.id;
   const roomId = navigation.getParam("roomId");
   let viewNum = -8;
+
   const { data } = useSubscription(NEW_MESSAGE, {
     variables: {
       roomId: roomId
     }
   });
 
+  console.log(data);
+
   const handleNewMessage = () => {
     if (data !== undefined) {
       const { newMessage } = data;
       setMessages(previous => {
         const temp = previous.slice(viewNum);
-        return [...temp];
+        return [...temp, newMessage];
       });
     }
   };
@@ -115,7 +119,8 @@ export default ({ navigation }) => {
   const { data: { messages: oldMessages }, error } = useQuery(GET_MESSAGES, {
     variables: {
       roomId: roomId
-    }
+    },
+    suspend: true
   });
 
   const [messages, setMessages] = useState(oldMessages.slice(viewNum) || []);
@@ -177,7 +182,7 @@ export default ({ navigation }) => {
           returnKeyType="send"
           blurOnSubmit={false}
           value={message}
-          onTouchEnd={() => setTimeout(onScrollToEnd, 400)}
+          onTouchStart={() => setTimeout(onScrollToEnd, 500)}
           onChangeText={onChangeText}
           onSubmitEditing={onSubMit}
         />
@@ -188,3 +193,5 @@ export default ({ navigation }) => {
     </KeyboardAvoidingView>
   );
 };
+
+export default withSuspense(Message);

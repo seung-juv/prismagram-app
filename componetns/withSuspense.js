@@ -4,6 +4,7 @@ import { ActivityIndicator, View } from "react-native";
 export default Component => {
   return class extends React.Component {
     render() {
+      const { navigation } = this.props;
       return (
         <Suspense
           fallback={
@@ -12,7 +13,7 @@ export default Component => {
             </View>
           }
         >
-          <Component />
+          <Component navigation={navigation} />
         </Suspense>
       );
     }
