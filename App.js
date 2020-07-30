@@ -44,6 +44,7 @@ export default function App() {
             }
           });
         },
+        uri: "http://prismagram.kingsky32.co.kr:4000",
         link: ApolloLink.from([
           onError(({ graphQLErrors, networkError }) => {
             if (graphQLErrors)
