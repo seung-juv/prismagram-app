@@ -84,7 +84,6 @@ export default ({ id, participants, me, navigation }) => {
     [data]
   );
   return (
-    !loading &&
     <TouchableOpacity
       onPress={() => navigation.navigate("Message", { roomId: id, opponent: opponent })}
     >
