@@ -12,11 +12,10 @@ const MainNavigation = createStackNavigator(
     MessageNavigation
   },
   {
-    navigationOptions: {
+    defaultNavigationOptions: {
       ...stackStyles
     },
-    headerMode: "none",
-    mode: "modal"
+    headerMode: "none"
   }
 );
 

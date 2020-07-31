@@ -46,13 +46,16 @@ export default createStackNavigator(
     Tabs: {
       screen: PhotoTabs,
       navigationOptions: {
-        title: "Recents"
+        title: "Recents",
+        headerBackTitle: "Cancel",
+        headerBackImage: () => null
       }
     },
     Upload: {
       screen: UploadPhoto,
       navigationOptions: {
-        title: "Upload"
+        title: "Upload",
+        headerBackTitle: " "
       }
     }
   },
@@ -64,10 +67,8 @@ export default createStackNavigator(
       cardStyle: {
         ...cardStyles
       },
-      headerBackTitle: "Cancel",
       headerBackTitleStyle: styles.backTitleStyle,
       headerLeftContainerStyle: styles.LeftContainerStyle,
-      headerBackImage: () => null,
       headerTintColor: styles.blackColor
     }
   }
