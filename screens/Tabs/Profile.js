@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { ScrollView, RefreshControl } from "react-native";
-import styled from "styled-components";
 import { useQuery } from "react-apollo-hooks";
-import Loader from "../../componetns/Loader";
 import { gql } from "apollo-boost";
 import { USER_FRAGMENT } from "../../fragments";
 import UserProfile from "../../componetns/UserProfile";
-import constants from "../../constants";
+import withSuspense from "../../componetns/withSuspense";
 
 const ME = gql`
   {
@@ -17,16 +15,11 @@ const ME = gql`
   ${USER_FRAGMENT}
 `;
 
-const LoaderWrapper = styled.View`
-  flex: 1;
-  height: ${constants.height / 1.25}px;
-  justify-content: center;
-  align-items: center;
-`;
-
-export default () => {
+export default withSuspense(() => {
   const [refreshing, setRefreshing] = useState(false);
-  const { data, loading, refetch } = useQuery(ME);
+  const { data, refetch } = useQuery(ME, {
+    suspend: true
+  });
   const onRefresh = async () => {
     try {
       setRefreshing(true);
@@ -39,11 +32,7 @@ export default () => {
   };
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-      {loading
-        ? <LoaderWrapper>
-            <Loader />
-          </LoaderWrapper>
-        : data && data.me && <UserProfile {...data.me} />}
+      {data && data.me && <UserProfile {...data.me} />}
     </ScrollView>
   );
-};
+});
