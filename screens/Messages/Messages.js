@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { USER_FRAGMENT } from "../../fragments";
 import { useQuery } from "react-apollo-hooks";
 import { ScrollView } from "react-native-gesture-handler";
 import { RefreshControl } from "react-native";
 import MessageCard from "../../componetns/MessageCard";
-import Loader from "../../componetns/Loader";
-import constants from "../../constants";
+import withSuspense from "../../componetns/withSuspense";
 
 const ME = gql`
   {
@@ -18,16 +16,11 @@ const ME = gql`
   ${USER_FRAGMENT}
 `;
 
-const LoaderWrapper = styled.View`
-  flex: 1;
-  height: ${constants.height / 1.25}px;
-  justify-content: center;
-  align-items: center;
-`;
-
-export default ({ navigation }) => {
+const Messages = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
-  const { data, loading, refetch } = useQuery(ME);
+  const { data, refetch } = useQuery(ME, {
+    suspend: true
+  });
   const onRefresh = async () => {
     try {
       setRefreshing(true);
@@ -40,16 +33,14 @@ export default ({ navigation }) => {
   };
   return (
     <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-      {loading
-        ? <LoaderWrapper>
-            <Loader />
-          </LoaderWrapper>
-        : data &&
-          data.me &&
-          data.me.rooms &&
-          data.me.rooms.map(room =>
-            <MessageCard key={room.id} me={data.me.username} navigation={navigation} {...room} />
-          )}
+      {data &&
+        data.me &&
+        data.me.rooms &&
+        data.me.rooms.map(room =>
+          <MessageCard key={room.id} me={data.me.username} navigation={navigation} {...room} />
+        )}
     </ScrollView>
   );
 };
+
+export default withSuspense(Messages);

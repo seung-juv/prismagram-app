@@ -13,6 +13,16 @@ const GET_MESSAGES = gql`
     messages(roomId: $roomId) {
       id
       text
+      from {
+        id
+        username
+        avatar
+      }
+      to {
+        id
+        username
+        avatar
+      }
     }
   }
 `;
@@ -31,6 +41,16 @@ const NEW_MESSAGE = gql`
     newMessage(roomId: $roomId) {
       id
       text
+      from {
+        id
+        username
+        avatar
+      }
+      to {
+        id
+        username
+        avatar
+      }
     }
   }
 `;
@@ -50,6 +70,31 @@ const MyMessages = styled.View`
 `;
 
 const MyMessage = styled.Text`text-align: right;`;
+
+const OppnentMessagesWrapper = styled.View`
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  align-self: flex-start;
+  align-items: flex-end;
+  margin-bottom: 10px;
+`;
+
+const OppnentMessages = styled.View`
+  padding: 15px;
+  border-radius: 30px;
+  border: ${styles.lightGreyColor};
+  background-color: #fff;
+  align-self: flex-start;
+`;
+
+const OppenetMessage = styled.Text`text-align: left;`;
+
+const OppnentAvatar = styled.Image`
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  margin-right: 10px;
+`;
 
 const TextInputWarpper = styled.View`
   margin-bottom: 25px;
@@ -158,12 +203,26 @@ const Message = ({ navigation }) => {
         <MyMessageWrapper>
           {messages.map(
             m =>
-              m &&
-              <MyMessages key={m.id}>
-                <MyMessage>
-                  {m.text}
-                </MyMessage>
-              </MyMessages>
+              m && m.from.username !== opponent.username
+                ? <MyMessages key={m.id}>
+                    <MyMessage>
+                      {m.text}
+                    </MyMessage>
+                  </MyMessages>
+                : <OppnentMessagesWrapper key={m.id}>
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      onPress={() =>
+                        navigation.navigate("UserProfile", { username: m.from.username })}
+                    >
+                      <OppnentAvatar source={{ uri: m.from.avatar }} />
+                    </TouchableOpacity>
+                    <OppnentMessages>
+                      <OppenetMessage>
+                        {m.text}
+                      </OppenetMessage>
+                    </OppnentMessages>
+                  </OppnentMessagesWrapper>
           )}
         </MyMessageWrapper>
       </ScrollView>
@@ -181,7 +240,7 @@ const Message = ({ navigation }) => {
           onChangeText={onChangeText}
           onSubmitEditing={onSubMit}
         />
-        <TouchableOpacity onPress={onSubMit}>
+        <TouchableOpacity activeOpacity={1} onPress={onSubMit}>
           <Send>Send</Send>
         </TouchableOpacity>
       </TextInputWarpper>

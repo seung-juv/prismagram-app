@@ -3,20 +3,29 @@ import Messages from "../screens/Messages/Messages";
 import Message from "../screens/Messages/Message";
 import { stackStyles, cardStyles } from "./config";
 import styles from "../styles";
+import UserDetail from "../screens/UserDetail";
 
 export default createStackNavigator(
   {
     Messages: {
       screen: Messages,
       navigationOptions: {
-        headerBackImage: () => null
+        headerBackTitle: " "
       }
     },
     Message: {
       screen: Message,
-      navigationOptions: {
+      navigationOptions: ({ navigation }) => ({
+        headerTitle: navigation.getParam("username"),
         headerBackTitle: " "
-      }
+      })
+    },
+    UserProfile: {
+      screen: UserDetail,
+      navigationOptions: ({ navigation }) => ({
+        headerTitle: navigation.getParam("username"),
+        headerBackTitle: " "
+      })
     }
   },
   {

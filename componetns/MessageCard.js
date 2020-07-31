@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import gql from "graphql-tag";
-import { useQuery, useMutation, useSubscription } from "react-apollo-hooks";
+import { useQuery, useSubscription } from "react-apollo-hooks";
 import styles from "../styles";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
@@ -10,6 +10,14 @@ const GET_MESSAGES = gql`
     messages(roomId: $roomId) {
       id
       text
+      from {
+        id
+        username
+      }
+      to {
+        id
+        username
+      }
     }
   }
 `;
@@ -19,6 +27,14 @@ const NEW_MESSAGE = gql`
     newMessage(roomId: $roomId) {
       id
       text
+      from {
+        id
+        username
+      }
+      to {
+        id
+        username
+      }
     }
   }
 `;
@@ -50,14 +66,15 @@ const Status = styled.Text`
 `;
 
 export default ({ id, participants, me, navigation }) => {
-  const [opponent] = participants.filter(user => user.username !== me && user.username);
   const roomId = id;
 
   const { data: { messages: oldMessages }, error } = useQuery(GET_MESSAGES, {
     variables: {
       roomId: roomId
-    }
+    },
+    suspend: true
   });
+  const [opponent] = participants.filter(user => user.username !== me);
 
   const [messages, setMessages] = useState(oldMessages || []);
 
@@ -85,7 +102,12 @@ export default ({ id, participants, me, navigation }) => {
   );
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("Message", { roomId: id, opponent: opponent })}
+      onPress={() =>
+        navigation.navigate("Message", {
+          roomId: id,
+          opponent: opponent,
+          username: opponent.username
+        })}
     >
       <Wrapper>
         <Avatar source={{ uri: opponent && opponent.avatar }} />
