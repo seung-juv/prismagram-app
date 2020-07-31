@@ -10,3 +10,4 @@ Screens:
 - [x] Photo Detail
 - [ ] Photo Comments (Chanllenge)
 - [ ] Photo Likes (Chanllenge)
+- [x] Direct Message
