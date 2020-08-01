@@ -9,5 +9,5 @@ Screens:
 - [ ] Edit Prfile (Chanllenge)
 - [x] Photo Detail
 - [ ] Photo Comments (Chanllenge)
-- [ ] Photo Likes (Chanllenge)
+- [x] Photo Likes (Chanllenge)
 - [x] Direct Message
