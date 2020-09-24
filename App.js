@@ -63,13 +63,13 @@ export default function App() {
               );
             },
             new WebSocketLink({
-              uri: `ws://prismagram.kingsky32.co.kr:4000/`,
+              uri: `ws://prismagram-backend.kingsky32.co.kr:4000/`,
               options: {
                 reconnect: true
               }
             }),
             new HttpLink({
-              uri: "http://prismagram.kingsky32.co.kr:4000",
+              uri: "http://prismagram-backend.kingsky32.co.kr",
               headers: {
                 Authorization: `Bearer ${token}`
               }
